@@ -1,0 +1,39 @@
+Author: Cristián D. Maureira Fredes
+Date: Nov 8 2010
+
+Recomendaciones
+---------------
+
+La implementación funciona bien cuando
+uno escoge  256 o 512 como el tamaño de bloques.
+
+
+Procedimiento
+-------------
+
+Primera llamada al kernel que calcula la integral,
+luego se realiza una suma parcial a la mitad,
+finalmente se realiza la ultima reducción que nos
+entregará la suma final.
+
+Una vez en el host, multiplicamos la suma por el tamaño del
+intervalo de integración y lo dividimos por 6, para
+obtener el resultado de la integral.
+
+
+Modificaciones
+--------------
+Se señalan a continuación algunos cambios en los archivos.
+
+integral.cu:
+	Se añadieron dos nuevos kernels, "reduction" y "final_reduction":
+	reduction:
+		Realiza casi el mismo procedimiento del cálculo
+		de la integral pero tiene la gracia de que no la está
+		calculando, sino que solo estamos realizando la misma idea
+		de la suma pero a la mitad de los bloques.
+	final_reductin:
+		Luego de tener la reducción anterior, tenemos ahora un nuevo
+		numero de bloques de donde tenemos que sacar los valores, por
+		lo que realizamos la ultima reducción mediantes sumas, para
+		obtener el valor final.	 
